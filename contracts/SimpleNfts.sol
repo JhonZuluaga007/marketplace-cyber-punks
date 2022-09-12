@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
 
 contract MyNFT is ERC721, ERC721Enumerable {
     using Counters for Counters.Counter;
@@ -22,6 +23,21 @@ contract MyNFT is ERC721, ERC721Enumerable {
         require(current < maxSupply, "No PaloPunks left :(");
 
         _safeMint(msg.sender, current);
+    }
+
+    function tokenURI(uint256 tokenId) public view override returns(string memory){
+        require(_exists(tokenId), "ERC721 Metadata: URI query for noneexistent token");
+
+        string memory jsonURI = Base64.encode(abi.encodePacked(
+            '{ "name": "PaloPunks #"',
+            tokenId,
+            '", "description": "PaloPunks are randomized Avatar"',
+            '"// TODO: Calcular image URL"',
+            '"}'
+            )
+        );
+
+        return string(abi.encodePacked("data:application/json;base64,", jsonURI));
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)

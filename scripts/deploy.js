@@ -5,7 +5,7 @@ const deploy = async () => {
 
   console.log("Deploying constract with the account: ", deployer.address);
 
-  const PaloPunks = await ethers.getContractFactory("MyNFT");
+  const PaloPunks = await ethers.getContractFactory("PaloPunks");
   const deployed = await PaloPunks.deploy();
 
   console.log("Palo Punks is deployend at: ", deployed.address );
